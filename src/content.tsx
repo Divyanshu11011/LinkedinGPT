@@ -18,7 +18,7 @@ const Content = () => {
   // Refs for icon container and image element
   const iconContainerRef = useRef<HTMLDivElement | null>(null);
   const imgElementRef = useRef<HTMLImageElement | null>(null);
-
+  
   // Effect hook to initialize icon container and observe mutations
   useEffect(() => {
     if (!iconContainerRef.current) {
@@ -75,6 +75,12 @@ const Content = () => {
     container.style.position = 'absolute';
     container.style.bottom = '0';
     container.style.right = '0';
+
+    // Append container to msg-form__msg-content-container
+    const msgContentContainer = document.querySelector('.msg-form__msg-content-container msg-form__msg-content-container--redesign msg-form__message-texteditor relative flex-grow-1 display-flex');
+    if (msgContentContainer) {
+      msgContentContainer.appendChild(container);
+    }
 
     // Set icon container reference
     iconContainerRef.current = container;
