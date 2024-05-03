@@ -32,5 +32,6 @@ To get started with this extension locally, follow these steps:
    ```
 
 ## DEMONSTRATION: 
-![LinkedIn Message Enhancer Screenshot](https://github.com/Divyanshu11011/LinkedinGPT/assets/93030810/468d6b9b-0974-43ae-b9b1-ae1c7374ea45)
+[GitHub Pages](https://github.com/Divyanshu11011/LinkedinGPT/assets/93030810/468d6b9b-0974-43ae-b9b1-ae1c7374ea45)
+
 
