@@ -32,7 +32,5 @@ To get started with this extension locally, follow these steps:
    ```
 
 ## DEMONSTRATION: 
-<video width="320" height="240" controls autoplay>
-  <source src="https://youtu.be/1-GXL81YiDA" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+![LinkedIn Message Enhancer Screenshot](https://github.com/Divyanshu11011/LinkedinGPT/assets/93030810/468d6b9b-0974-43ae-b9b1-ae1c7374ea45)
+
