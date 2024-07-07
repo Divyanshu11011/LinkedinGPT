@@ -1,6 +1,6 @@
 import type { PlasmoCSConfig } from "plasmo";
 import React, { useEffect, useState, useRef } from "react";
-import MessageGeneratorModal from "~generator-modal/MessageGenerator";
+import MessageGeneratorModal from "~Components/MsgGeneratorModal";
 import TextBoxIcon from "assets/modal-icons/text-box-icon.svg";
 import BackgroundTextBoxIcon from "assets/modal-icons/background-blur.svg";
 
@@ -13,12 +13,68 @@ export const config: PlasmoCSConfig = {
 const Content = () => {
   // State variables to track modal and textbox activity
   const [isMessageGeneratorOpen, setIsMessageGeneratorOpen] = useState(false);
-  const [isTextBoxActive, setIsTextBoxActive] = useState(false); // Track textbox activity
+  const [isTextBoxActive, setIsTextBoxActive] = useState(false);
 
   // Refs for icon container and image element
   const iconContainerRef = useRef<HTMLDivElement | null>(null);
   const imgElementRef = useRef<HTMLImageElement | null>(null);
-  
+
+  // Function to create the icon container
+  const createIconContainer = () => {
+    const container = document.createElement("div");
+    container.className = "ai-icon absolute bottom-0 right-0 hidden";
+    const imgElement = document.createElement("img");
+    imgElement.src = TextBoxIcon;
+    imgElement.alt = "ai-icon";
+    imgElement.className = "w-8 h-8 cursor-pointer";
+
+    // Event listener to open message generator modal and update icon
+    imgElement.addEventListener("click", () => {
+      setIsMessageGeneratorOpen(true);
+      imgElement.src = BackgroundTextBoxIcon;
+      iconContainerRef.current?.classList.remove("hidden");
+    });
+
+    // Append image element to the container
+    container.appendChild(imgElement);
+    imgElementRef.current = imgElement;
+
+    // Set container's position
+    container.style.position = 'absolute';
+    container.style.bottom = '0';
+    container.style.right = '0';
+
+    // Append container to msg-form__msg-content-container
+    const msgContentContainer = document.querySelector('.msg-form__msg-content-container.msg-form__msg-content-container--redesign.msg-form__message-texteditor.relative.flex-grow-1.display-flex');
+    if (msgContentContainer) {
+      msgContentContainer.appendChild(container);
+    }
+
+    // Set icon container reference
+    iconContainerRef.current = container;
+  };
+
+  // Function to setup textbox event listeners
+  const setupTextBox = (textBox: HTMLElement) => {
+    // Event listener for textbox focus
+    textBox.addEventListener("focus", () => {
+      setIsTextBoxActive(true);
+      if (iconContainerRef.current && imgElementRef.current) {
+        textBox.appendChild(iconContainerRef.current);
+        imgElementRef.current.src = TextBoxIcon;
+        iconContainerRef.current.classList.remove("hidden");
+      }
+    });
+
+    // Event listener for textbox blur
+    textBox.addEventListener("blur", () => {
+      setIsTextBoxActive(false);
+      if (iconContainerRef.current && imgElementRef.current && !isMessageGeneratorOpen) {
+        iconContainerRef.current.classList.add("hidden");
+      }
+    });
+  };
+
   // Effect hook to initialize icon container and observe mutations
   useEffect(() => {
     if (!iconContainerRef.current) {
@@ -50,62 +106,6 @@ const Content = () => {
       iconContainerRef.current?.remove();
     };
   }, []);
-
-  // Function to create the icon container
-  const createIconContainer = () => {
-    const container = document.createElement("div");
-    container.className = "ai-icon absolute bottom-0 right-0 hidden";
-    const imgElement = document.createElement("img");
-    imgElement.src = TextBoxIcon;
-    imgElement.alt = "ai-icon";
-    imgElement.className = "w-8 h-8 cursor-pointer";
-
-    // Event listener to open message generator modal and update icon
-    imgElement.addEventListener("click", () => {
-      setIsMessageGeneratorOpen(true);
-      imgElement.src = BackgroundTextBoxIcon;
-      iconContainerRef.current?.classList.remove("hidden");
-    });
-
-    // Append image element to the container
-    container.appendChild(imgElement);
-    imgElementRef.current = imgElement;
-
-    // Set container's position
-    container.style.position = 'absolute';
-    container.style.bottom = '0';
-    container.style.right = '0';
-
-    // Append container to msg-form__msg-content-container
-    const msgContentContainer = document.querySelector('.msg-form__msg-content-container msg-form__msg-content-container--redesign msg-form__message-texteditor relative flex-grow-1 display-flex');
-    if (msgContentContainer) {
-      msgContentContainer.appendChild(container);
-    }
-
-    // Set icon container reference
-    iconContainerRef.current = container;
-  };
-
-  // Function to setup textbox event listeners
-  const setupTextBox = (textBox: HTMLElement) => {
-    // Event listener for textbox focus
-    textBox.addEventListener("focus", () => {
-      setIsTextBoxActive(true);
-      if (iconContainerRef.current && imgElementRef.current) {
-        textBox.appendChild(iconContainerRef.current);
-        imgElementRef.current.src = TextBoxIcon;
-        iconContainerRef.current.classList.remove("hidden");
-      }
-    });
-
-    // Event listener for textbox blur
-    textBox.addEventListener("blur", () => {
-      setIsTextBoxActive(false);
-      if (iconContainerRef.current && imgElementRef.current && !isMessageGeneratorOpen) {
-        iconContainerRef.current.classList.add("hidden");
-      }
-    });
-  };
 
   // Effect hook to handle icon visibility based on modal and textbox state
   useEffect(() => {
